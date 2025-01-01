@@ -1,0 +1,31 @@
+#include <string>
+#include <cmath>
+#include <algorithm>
+using namespace std;
+
+class Solution {
+public:
+    
+    int maxScore(string s) {
+        int maxsum=0;
+        int countones = 0;
+        for (int i = 0; i < s.size(); i++) { // Start at 1 to ensure split
+            if(s[i]=='1'){
+                countones++;
+            }
+        }
+        int countzeroes=0;
+        
+        for(int i=0;i<s.size()-1;i++){
+            if(s[i]=='1'){
+            countones--;
+        }
+        else{
+            countzeroes++;
+            
+        }
+        maxsum=max(maxsum,countzeroes+countones);
+        }
+        return maxsum;
+    }
+};
