@@ -1,0 +1,59 @@
+
+class Solution {
+public:
+    int orangesRotting(vector<vector<int>>& grid) {
+        int n = grid.size();
+        int m = grid[0].size();
+        queue<pair<pair<int, int>, int>> q; // Queue to store {{row, col}, time}
+        vector<vector<int>> vis(n, vector<int>(m, 0)); // Visited array
+        int totalFresh = 0; // Count of all fresh oranges
+
+        // Initialize the queue with all rotten oranges
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                if (grid[i][j] == 2) {
+                    q.push({{i, j}, 0});
+                    vis[i][j] = 1; // Mark as visited
+                } else if (grid[i][j] == 1) {
+                    totalFresh++;
+                }
+            }
+        }
+
+        int maxTime = 0; // Track the maximum time taken
+        int rottenCount = 0; // Count of freshly rotten oranges
+        int dRow[] = {-1, 0, 1, 0}; // Directions for row
+        int dCol[] = {0, 1, 0, -1}; // Directions for column
+
+        // BFS traversal
+        while (!q.empty()) {
+            int r = q.front().first.first;
+            int c = q.front().first.second;
+            int time = q.front().second;
+            q.pop();
+
+            maxTime = max(maxTime, time); // Update maximum time
+
+            // Check all 4 directions
+            for (int i = 0; i < 4; i++) {
+                int newRow = r + dRow[i];
+                int newCol = c + dCol[i];
+
+                // Check bounds and conditions for fresh oranges
+                if (newRow >= 0 && newRow < n && newCol >= 0 && newCol < m && 
+                    !vis[newRow][newCol] && grid[newRow][newCol] == 1) {
+                    q.push({{newRow, newCol}, time + 1});
+                    vis[newRow][newCol] = 1; // Mark as visited
+                    rottenCount++;
+                }
+            }
+        }
+
+        // If not all fresh oranges are rotten, return -1
+        if (rottenCount != totalFresh) {
+            return -1;
+        }
+
+        return maxTime;
+    }
+};
