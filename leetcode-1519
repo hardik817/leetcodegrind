@@ -1,0 +1,33 @@
+class Solution {
+public:
+    void dfs(string &labels, unordered_map<int, vector<int>> &adj, vector<int> &res, vector<int> &chararr, int parent, int curr) {
+        char curr1 = labels[curr];
+        int before = chararr[curr1 - 'a'];
+        chararr[curr1 - 'a']++;
+
+        for (int &a : adj[curr]) {
+            if (a == parent) {
+                continue;
+            }
+            dfs(labels, adj, res, chararr, curr, a);
+        }
+
+        int after = chararr[curr1 - 'a'];
+        res[curr] = after - before;
+    }
+
+    vector<int> countSubTrees(int n, vector<vector<int>>& edges, string labels) {
+        unordered_map<int, vector<int>> adj;
+        for (int i = 0; i < edges.size(); i++) {
+            int u = edges[i][0];
+            int v = edges[i][1];
+            adj[u].push_back(v);
+            adj[v].push_back(u);
+        }
+
+        vector<int> res(n, 0);
+        vector<int> chararr(26, 0);
+        dfs(labels, adj, res, chararr, -1, 0);
+        return res;
+    }
+};
