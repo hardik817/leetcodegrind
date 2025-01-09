@@ -1,0 +1,62 @@
+class Solution {
+public:
+    string intToRoman(int num) {
+        vector<string> prevans;
+        string ans;
+        unordered_map<int, char> mp;
+        mp[1] = 'I';
+        mp[5] = 'V';
+        mp[10] = 'X';
+        mp[50] = 'L';
+        mp[100] = 'C';
+        mp[500] = 'D';
+        mp[1000] = 'M';
+
+        int count_pow = 0;
+
+        while (num != 0) {
+            int m = num % 10;
+            int initial_value = m * pow(10, count_pow);
+            string s;
+
+            if (m > 0 && m < 4) {
+                int val = pow(10, count_pow);
+                char c = mp[val];
+                for (int i = 0; i < m; i++) {
+                    s.push_back(c);
+                }
+            } else if (m == 4) {
+                int val = 5 * pow(10, count_pow);
+                char c = mp[val];
+                char c1 = mp[val / 5];
+                s.push_back(c1);
+                s.push_back(c);
+            } else if (m > 4 && m < 9) {
+                int val = 5 * pow(10, count_pow);
+                char c = mp[val];
+                char c1 = mp[val / 5];
+                s.push_back(c);
+                for (int i = 0; i < m - 5; i++) {
+                    s.push_back(c1);
+                }
+            } else if (m == 9) {
+                int val = 10 * pow(10, count_pow);
+                char c = mp[val];
+                char c1 = mp[val / 10];
+                s.push_back(c1);
+                s.push_back(c);
+            }
+
+            prevans.push_back(s);
+            num = num / 10;
+            count_pow++;
+        }
+
+        reverse(prevans.begin(), prevans.end());
+        for (int i = 0; i < prevans.size(); i++) {
+            ans += prevans[i];
+        }
+
+        return ans;
+    }
+};
