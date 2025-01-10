@@ -1,0 +1,24 @@
+class Solution {
+public:
+    string addBinary(string a, string b) {
+        char c = '0';
+        int i = a.size() - 1;
+        int j = b.size() - 1;
+        string s;
+
+        while (i >= 0 || j >= 0 || c == '1') {
+            char bitA = (i >= 0) ? a[i] : '0';
+            char bitB = (j >= 0) ? b[j] : '0';
+            
+            int sum = (bitA - '0') + (bitB - '0') + (c - '0');
+            s.push_back((sum % 2) + '0');
+            c = (sum / 2) + '0';
+            
+            i--;
+            j--;
+        }
+
+        reverse(s.begin(), s.end());
+        return s;
+    }
+};
