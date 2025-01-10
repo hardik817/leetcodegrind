@@ -1,0 +1,19 @@
+class Solution {
+public:
+    int partitionDisjoint(vector<int>& nums) {
+        int n = nums.size();
+        int left = 0;
+        int maxLeft = nums[0]; // Maximum value in the left part
+        int currentMax = nums[0]; 
+        
+        for (int i = 1; i < n; ++i) {
+            currentMax = max(currentMax, nums[i]);
+            if (nums[i] < maxLeft) {
+                left = i;
+                maxLeft = currentMax;
+            }
+        }
+        
+        return left + 1; 
+    }
+};
