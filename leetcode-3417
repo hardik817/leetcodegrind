@@ -1,0 +1,32 @@
+class Solution {
+public:
+    vector<int> zigzagTraversal(vector<vector<int>>& grid) {
+        int n=grid.size();
+        int m=grid[0].size();
+        vector<int> ans;
+        int j=0;
+        int col=0;
+        while(col!=n){
+            if(col%2==0){
+                for(int i=j;i<m;i=i+2){
+                ans.push_back(grid[col][i]);
+             }
+            }
+            else{
+                vector<int> temp;
+                for(int i=j;i<m;i=i+2){
+                    temp.push_back(grid[col][i]);
+                }
+                for(int i=temp.size()-1;i>=0;i--){
+                ans.push_back(temp[i]);
+                }
+            }
+            col++;
+            if(j==0) j=1;
+            else{
+                j=0;
+            }
+        }
+        return ans;
+    }
+};
