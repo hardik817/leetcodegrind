@@ -1,0 +1,22 @@
+#include <algorithm>
+#include <vector>
+using namespace std;
+
+class Solution {
+public:
+    int largestPerimeter(vector<int>& nums) {
+        // Sort the array in ascending order
+        sort(nums.begin(), nums.end());
+
+        // Start from the largest possible triplet and move backwards
+        for (int i = nums.size() - 3; i >= 0; --i) {
+            // Check if the three sides form a valid triangle
+            if (nums[i] + nums[i + 1] > nums[i + 2]) {
+                return nums[i] + nums[i + 1] + nums[i + 2];
+            }
+        }
+
+        // If no valid triangle can be formed, return 0
+        return 0;
+    }
+};
