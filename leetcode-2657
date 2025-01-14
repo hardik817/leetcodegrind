@@ -1,0 +1,41 @@
+class Solution {
+public:
+    vector<int> findThePrefixCommonArray(vector<int>& A, vector<int>& B) {
+        unordered_set<int> visited;
+        vector<int> ans;
+
+        int common=0;
+
+        for(int i=0;i<A.size();i++){
+            if(A[i]==B[i]){
+                common++;
+                ans.push_back(common);
+                continue;
+            }
+            if(!visited.empty())
+            {
+                if(visited.find(A[i])!=visited.end()){
+                    common++;
+                }
+                else{
+                    visited.insert(A[i]);
+                }
+                if(visited.find(B[i])!=visited.end()){
+                    common++;
+                }
+                else{
+                    visited.insert(B[i]);
+                }
+            }
+            else{
+                visited.insert(A[i]);
+                visited.insert(B[i]);
+            }
+            
+            ans.push_back(common);
+        }
+
+        return ans;
+
+    }
+};
