@@ -1,0 +1,37 @@
+class Solution {
+public:
+    unordered_map<int, vector<int>> mp;
+
+    bool dfs(int curr, int parent, vector<int>& visited, vector<int>& ans) {
+        visited[curr] = 1;
+        for (auto& neighbor : mp[curr]) {
+            if (neighbor == parent) {
+                continue;
+            }
+            if (visited[neighbor]) {
+                ans = {curr, neighbor};
+                return true;
+            }
+            if (dfs(neighbor, curr, visited, ans)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    vector<int> findRedundantConnection(vector<vector<int>>& edges) {
+        int n = edges.size();
+        vector<int> visited(n + 1, 0);
+        vector<int> ans;
+        for (const auto& edge : edges) {
+            int u = edge[0], v = edge[1];
+            fill(visited.begin(), visited.end(), 0);
+            mp[u].push_back(v);
+            mp[v].push_back(u);
+            if (dfs(u, -1, visited, ans)) {
+                return edge; 
+            }
+        }
+        return {};
+    }
+};
