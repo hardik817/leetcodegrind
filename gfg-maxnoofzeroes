@@ -1,0 +1,21 @@
+string maxZero(vector<string> &arr)
+{
+    int maxZeros = 0;
+    string ans = "";
+
+    for (string num : arr)
+    {
+        int currentZeros = count(num.begin(), num.end(), '0');
+
+        // Update if we find more zeros or same zeros but larger number
+        if (currentZeros > maxZeros ||
+            (currentZeros == maxZeros && (ans == "" || num.length() > ans.length() ||
+                                          (num.length() == ans.length() && num > ans))))
+        {
+            maxZeros = currentZeros;
+            ans = num;
+        }
+    }
+
+    return maxZeros > 0 ? ans : "-1";
+}
