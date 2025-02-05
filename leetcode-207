@@ -1,0 +1,39 @@
+class Solution {
+public:
+    bool topologicalsort(int num,unordered_map<int,vector<int>> adj,vector<int> indegrees){
+        int count=0;
+        queue<int> q;
+        for(int i=0;i<num;i++){
+            if(indegrees[i]==0){
+                q.push(i);
+                count++;
+            }
+        }
+        if(count==num) return true;
+        while(!q.empty()){
+            int top=q.front();
+            q.pop();
+            for(auto &it:adj[top]){
+                indegrees[it]--;
+                if(indegrees[it]==0){
+                    q.push(it);
+                    count++;
+                }
+            }
+        }
+        return count==num;
+    }
+    bool canFinish(int num, vector<vector<int>>& prerequisites) {
+            unordered_map<int,vector<int>> adj;
+            vector<int> indegrees(num,0);
+            for(auto &vec:prerequisites){
+                int a=vec[0];
+                int b=vec[1];
+
+                adj[b].push_back(a);
+                indegrees[a]++;
+            }
+            return topologicalsort(num,adj,indegrees);
+
+    }
+};
