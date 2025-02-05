@@ -1,0 +1,42 @@
+class Solution {
+public:
+    vector<int> topologicalsort(int num,unordered_map<int,vector<int>> mp,vector<int> indegree){
+        vector<int> ans;
+        queue<int> q;
+        for(int i=0;i<num;i++){
+            if(indegree[i]==0){
+                q.push(i);
+                ans.push_back(i);
+            }
+        }
+        while(!q.empty()){
+            int top=q.front();
+            q.pop();
+            for(auto &it:mp[top]){
+                indegree[it]--;
+                if(indegree[it]==0){
+                    q.push(it);
+                    ans.push_back(it);
+                }
+            }
+        }
+        if(ans.size()==num){
+            return ans;
+        }
+        else{
+            return {};
+        }
+    }
+    vector<int> findOrder(int num, vector<vector<int>>& pre) {
+        unordered_map<int,vector<int>> mp;
+        vector<int> indegree(num,0);
+        for(auto &it:pre){
+            int a=it[0];
+            int b=it[1];
+
+            indegree[a]++;
+            mp[b].push_back(a);
+        }
+        return topologicalsort(num,mp,indegree);
+    }
+};
