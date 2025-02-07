@@ -1,0 +1,19 @@
+class Solution {
+public:
+    int largestSumAfterKNegations(vector<int>& nums, int k) {
+        sort(nums.begin(), nums.end());  // Step 1: Sort the array
+        
+        // Step 2: Flip negative numbers while k > 0
+        for (int i = 0; i < nums.size() && k > 0 && nums[i] < 0; i++, k--) {
+            nums[i] = -nums[i];
+        }
+
+        sort(nums.begin(), nums.end());
+
+        if (k % 2 == 1) {
+            nums[0] = -nums[0];
+        }
+
+        return accumulate(nums.begin(), nums.end(), 0);
+    }
+};
