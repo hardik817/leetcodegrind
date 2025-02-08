@@ -1,0 +1,31 @@
+class Solution {
+public:
+    int minimizeSet(int div1, int div2, int cnt1, int cnt2) {
+        long long left = 1, right = 1e18;
+        long long result = right;
+
+        while (left <= right) {
+            long long mid = left + (right - left) / 2;
+
+            // Numbers not divisible by div1
+            long long notDiv1 = mid - mid / div1;
+
+            // Numbers not divisible by div2
+            long long notDiv2 = mid - mid / div2;
+
+            // Numbers not divisible by both div1 and div2
+            long long lcm = (long long)div1 * div2 / __gcd(div1, div2);
+            long long notDivBoth = mid - mid / lcm;
+
+            // Check if we can satisfy cnt1 and cnt2
+            if (notDiv1 >= cnt1 && notDiv2 >= cnt2 && notDivBoth >= (cnt1 + cnt2)) {
+                result = mid;
+                right = mid - 1;
+            } else {
+                left = mid + 1;
+            }
+        }
+
+        return result;
+    }
+};
