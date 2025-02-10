@@ -1,0 +1,25 @@
+class Solution
+{
+public:
+    string clearDigits(string s)
+    {
+        vector<char> s1;
+        for (char c : s)
+        {
+            if ((c == '0' || c == '1' || c == '2' || c == '3' || c == '4' || c == '5' || c == '6' || c == '7' || c == '8' || c == '9'))
+            {
+                s1.pop_back();
+            }
+            else
+            {
+                s1.push_back(c);
+            }
+        }
+        string s2 = "";
+        for (auto &c : s1)
+        {
+            s2.push_back(c);
+        }
+        return s2;
+    }
+};
