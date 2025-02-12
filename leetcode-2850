@@ -1,0 +1,60 @@
+class Solution
+{
+public:
+    long helper(vector<vector<int>> grid, vector<int> &extra, vector<pair<int, int>> loc)
+    {
+
+        int cnt = 0;
+        for (auto it : extra)
+            if (it == 1)
+                cnt++;
+
+        if (cnt == extra.size())
+            return 0;
+
+        long op = INT_MAX;
+
+        for (int i = 0; i < grid.size(); i++)
+        {
+            for (int j = 0; j < grid[0].size(); j++)
+            {
+                if (grid[i][j] == 0)
+                {
+
+                    grid[i][j] = 1;
+                    for (int k = 0; k < extra.size(); k++)
+                    {
+                        if (extra[k] > 1)
+                        {
+                            extra[k]--;
+                            op = min(op, abs(i - loc[k].first) + abs(j - loc[k].second) + helper(grid, extra, loc));
+                            extra[k]++;
+                        }
+                    }
+                }
+            }
+        }
+
+        return op;
+    };
+    int minimumMoves(vector<vector<int>> &grid)
+    {
+
+        vector<int> extra;
+        vector<pair<int, int>> loc;
+        for (int i = 0; i < 3; i++)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                if (grid[i][j] > 1)
+                {
+                    extra.push_back(grid[i][j]);
+                    loc.push_back({i, j});
+                }
+            }
+        }
+        int n = extra.size();
+
+        return helper(grid, extra, loc);
+    }
+};
