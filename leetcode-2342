@@ -1,0 +1,32 @@
+class Solution {
+public:
+    int sumofdigits(int n) {
+        int s = 0;
+        while (n != 0) {
+            s += n % 10;
+            n = n / 10;
+        }
+        return s;
+    }
+
+    int maximumSum(vector<int>& nums) {
+        unordered_map<int, vector<int>> mp;
+        for (int i : nums) {
+            int k = sumofdigits(i);
+            mp[k].push_back(i);
+        }
+
+        int sum1 = -1;  // Initialize to -1 to handle the case where no pairs are found
+        for (auto& a : mp) {
+            vector<int>& c = a.second;
+            if (c.size() < 2) {
+                continue;
+            }
+            sort(c.begin(), c.end(), greater<int>());
+            int currsum = c[0] + c[1];
+            sum1 = max(currsum, sum1);
+        }
+
+        return sum1;
+    }
+};
