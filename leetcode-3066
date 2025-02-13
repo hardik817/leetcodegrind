@@ -1,0 +1,28 @@
+#include <vector>
+#include <queue>
+
+class Solution
+{
+public:
+    int minOperations(std::vector<int> &nums, int k)
+    {
+        std::priority_queue<long long, std::vector<long long>, std::greater<long long>> pq(nums.begin(), nums.end());
+        int operations = 0;
+
+        while (!pq.empty() && pq.top() < k)
+        {
+            long long first = pq.top();
+            pq.pop();
+            if (pq.empty())
+                break;
+            long long second = pq.top();
+            pq.pop();
+
+            long long newVal = first * 2 + second;
+            pq.push(newVal);
+            operations++;
+        }
+
+        return operations;
+    }
+};
