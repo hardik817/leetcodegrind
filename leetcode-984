@@ -1,0 +1,30 @@
+#include <string>
+
+class Solution {
+public:
+    std::string strWithout3a3b(int a, int b) {
+        std::string result = "";
+        
+        while (a > 0 || b > 0) {
+            bool writeA = false;
+
+            if (result.size() >= 2 && result[result.size() - 1] == result[result.size() - 2]) {
+                // If last two characters are the same, force writing the other character
+                writeA = result.back() == 'b';
+            } else {
+                // Otherwise, write the character that appears more frequently
+                writeA = a >= b;
+            }
+
+            if (writeA) {
+                result += 'a';
+                a--;
+            } else {
+                result += 'b';
+                b--;
+            }
+        }
+
+        return result;
+    }
+};
