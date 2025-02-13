@@ -1,0 +1,45 @@
+class Solution {
+public:
+    bool ispossible(unordered_map<char,int> mp,string s){
+        unordered_map<char,int> b;
+        for(char c:s){
+            b[c]++;
+        }
+        for(auto &d:b){
+            if(mp.find(d.first)!=mp.end()){
+                return false;
+            }
+            else{
+                if(d.second>mp[d.first]){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+    void solve(unordered_map<char,int> mp,vector<string>& words,vector<int>& score,int i,int &maxsum,int currsum){
+        if(i==mp.size()){
+            maxsum=max(maxsum,currsum);
+            return;
+        }
+        solve(mp,words,score,i+1,maxsum,currsum);
+        if(ispossible(mp,words[i])){
+            int sum=0;
+            for(char c:words[i]){
+                mp[c]--;
+                sum=sum+score[c-'a'];
+            }
+            currsum=currsum + sum;
+            solve(mp,words,score,i+1,maxsum,currsum);
+        }
+    }
+    int maxScoreWords(vector<string>& words, vector<char>& letters, vector<int>& score) {
+        unordered_map<char,int> mp;
+        for(char c:letters){
+            mp[c]++;
+        }
+        int maxsum=0;
+        solve(mp,words,score,0,maxsum,0);
+        return maxsum;
+    }
+};
