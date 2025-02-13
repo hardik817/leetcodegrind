@@ -1,0 +1,19 @@
+class Solution {
+public:
+    int halveArray(vector<int>& nums) {
+        double initialsum = accumulate(nums.begin(), nums.end(), 0.0); // Accumulate sum as double
+        double sumneeded = initialsum / 2;
+        
+        priority_queue<double> pq(nums.begin(), nums.end()); // Max heap with double values
+        
+        int k = 0;
+        while (initialsum > sumneeded) {
+            double a = pq.top(); // Store as double
+            pq.pop();
+            initialsum -= a / 2; // Reduce the sum
+            pq.push(a / 2); // Push half value back
+            k++;
+        }
+        return k;
+    }
+};
