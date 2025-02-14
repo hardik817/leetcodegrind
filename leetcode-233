@@ -1,0 +1,30 @@
+class Solution {
+public:
+    int solve(vector<vector<vector<int>>>& dp, int i, bool tight, int curr_cnt, const string& s) {
+        // Base case: all digits are processed
+        if (i == s.length()) return curr_cnt;
+
+        // Check if result is already computed
+        if (dp[i][curr_cnt][tight] != -1) return dp[i][curr_cnt][tight];
+
+        int limit = tight ? s[i] - '0' : 9; // Determine the upper limit for this digit
+        int ans = 0;
+
+        // Iterate through all possible digits
+        for (int digit = 0; digit <= limit; digit++) {
+            ans += solve(dp, i + 1, tight && (digit == limit), curr_cnt + (digit == 1), s);
+        }
+
+        return dp[i][curr_cnt][tight] = ans;
+    }
+
+    int countDigitOne(int n) {
+        string s = to_string(n);
+        int len = s.length();
+
+        // DP table: dimensions based on length of number and possible counts of '1'
+        vector<vector<vector<int>>> dp(len, vector<vector<int>>(len + 1, vector<int>(2, -1)));
+
+        return solve(dp, 0, true, 0, s);
+    }
+};
