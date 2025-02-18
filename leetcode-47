@@ -1,0 +1,47 @@
+class Solution
+{
+public:
+    void solve(vector<int> &nums, unordered_map<int, int> mp, vector<int> temp, vector<vector<int>> &ans, unordered_map<int, bool> visited)
+    {
+        if (temp.size() == nums.size())
+        {
+            ans.push_back(temp);
+        }
+        for (auto &it : mp)
+        {
+            int a = it.first;
+            int b = it.second;
+            if (!visited[a])
+            {
+                temp.push_back(a);
+                mp[a]--;
+                if (mp[a] == 0)
+                {
+                    visited[a] = true;
+                }
+                solve(nums, mp, temp, ans, visited);
+                temp.pop_back();
+                mp[a]++;
+                visited[a] = false;
+            }
+        }
+    }
+    vector<vector<int>> permuteUnique(vector<int> &nums)
+    {
+        unordered_map<int, int> mp;
+        for (int i : nums)
+        {
+            mp[i]++;
+        }
+        int n = mp.size();
+        unordered_map<int, bool> visited;
+        for (int i : nums)
+        {
+            visited[i] = false;
+        }
+        vector<int> temp;
+        vector<vector<int>> ans;
+        solve(nums, mp, temp, ans, visited);
+        return ans;
+    }
+};
