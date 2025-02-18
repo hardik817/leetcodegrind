@@ -1,0 +1,36 @@
+class Solution {
+public:
+    int beautifulSubsets(vector<int>& nums, int k) {
+        int totalCount = 1;
+
+        map<int, map<int, int>> freqMap;
+        for (int& num : nums) {
+            freqMap[num % k][num]++;
+        }
+
+        for (auto& fr : freqMap) {
+            int n =
+                fr.second.size(); 
+
+            vector<pair<int, int>> subsets(fr.second.begin(), fr.second.end());
+            vector<int> counts(n + 1);  
+            counts[n] = 1;              
+
+            for (int i = n - 1; i >= 0; i--) {
+                int skip = counts[i + 1];
+                int take = (1 << subsets[i].second) - 1;
+                if (i + 1 < n && subsets[i + 1].first - subsets[i].first == k) {
+                    take *= counts[i + 2];
+                } else {
+                    take *= counts[i + 1];
+                }
+
+                counts[i] = skip + take;
+            }
+
+            totalCount *= counts[0];
+        }
+
+        return totalCount - 1;
+    }
+};
