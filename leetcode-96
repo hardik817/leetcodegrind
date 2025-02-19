@@ -1,0 +1,29 @@
+class Solution
+{
+public:
+    map<pair<int, int>, int> mp;
+
+    int solve(int start, int end)
+    {
+        if (start > end)
+            return 1;
+
+        if (mp.find({start, end}) != mp.end())
+            return mp[{start, end}];
+
+        int count = 0;
+        for (int i = start; i <= end; i++)
+        {
+            int left = solve(start, i - 1);
+            int right = solve(i + 1, end);
+            count += left * right;
+        }
+
+        return mp[{start, end}] = count;
+    }
+
+    int numTrees(int n)
+    {
+        return solve(1, n);
+    }
+};
