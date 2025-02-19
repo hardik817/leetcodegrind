@@ -1,0 +1,32 @@
+class Solution {
+public:
+    string str="abc";
+    void solve(int n,int k,vector<string> &ans,char d,string temp){
+        if(temp.size()==n){
+            ans.push_back(temp);
+            return;
+        }
+        if(ans.size()==k){
+            return;
+        }
+        for(char c:str){
+            if(c==d){
+                continue;
+            }
+            else{
+                temp.push_back(c);
+                solve(n,k,ans,c,temp);
+                temp.pop_back();
+            }
+        }
+    }
+    string getHappyString(int n, int k) {
+        vector<string> ans;
+        string temp="";
+        solve(n,k,ans,'z',temp);
+        if(k<=ans.size()){
+            return ans[k-1];
+        }
+        return "";
+    }
+};
