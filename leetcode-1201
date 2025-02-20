@@ -1,0 +1,55 @@
+class Solution {
+public:
+    
+    long long int gcdFind(long long int a, long long int b)
+    {
+        if(b == 0)
+            return a;
+        return gcdFind(b, a % b);
+    }
+    
+    long long int lcm(long long int a, long long int b)
+    {
+        long long int gcd = gcdFind(a, b);
+        return (a*b) / gcd;
+    }
+    
+    long long int find(int a, int b, int c, long long int no)
+    {
+        long long int individuals = 0;
+        individuals += no/a;
+        individuals += no/b;
+        individuals += no/c;
+        
+        long long int doubles = 0;
+        doubles += (no /lcm(a,b));
+        doubles += (no /lcm(b,c));
+        doubles += (no /lcm(c,a));
+        
+        long long int triples = 0;
+        triples += (no/lcm(lcm(a,b),c));
+        
+        return individuals - doubles + triples;
+    }
+    
+    int nthUglyNumber(int n, int a, int b, int c) {
+        long long int l, r, mid;
+        l = 1;
+        r = 2 * 1e9;
+        
+        while(l < r)
+        {
+            mid = (l+r)/2;
+            long long int res = find(a, b, c, mid);
+            if(find(a, b, c, mid) >= n)
+            {
+               r = mid;
+            }
+            else
+            {
+               l = mid+1;
+            }
+        }
+        return l;
+    }
+};

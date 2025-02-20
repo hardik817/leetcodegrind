@@ -1,0 +1,38 @@
+class Solution
+{
+public:
+    unordered_set<string> st;
+    int dp[301];
+    bool solve(int i, string s)
+    {
+        if (i >= s.size())
+        {
+            return dp[i] = true;
+        }
+        if (st.find(s) != st.end())
+        {
+            return dp[i] = true;
+        }
+        if (dp[i] != -1)
+            return dp[i];
+        for (int l = 1; l < s.size(); l++)
+        {
+            string temp = s.substr(i, l);
+            if (st.find(temp) != st.end() && solve(i + l, s))
+            {
+                return dp[i] = true;
+            }
+        }
+        return dp[i] = false;
+    }
+    bool wordBreak(string s, vector<string> &wordDict)
+    {
+        memset(dp, -1, sizeof(dp));
+        for (string s1 : wordDict)
+        {
+            st.insert(s1);
+        }
+        return solve(0, s);
+    }
+};
+l

@@ -1,0 +1,31 @@
+class Solution {
+public:
+    int solve(vector<int>& prices, bool bought, int i,vector<vector<int>> &dp) {
+        if (i >= prices.size()) {
+            return 0;
+        }
+        if(i==prices.size()-1){
+            if(bought){
+                return dp[i][bought]=prices[i];
+            }
+            dp[i][bought]=0;
+        }
+        if(dp[i][bought]!=-1) return dp[i][bought];
+        int hold = solve(prices, bought, i + 1,dp);
+        int buy = INT_MIN, sell = INT_MIN;
+
+        if (!bought) {
+            buy = solve(prices, true, i + 1,dp)-prices[i];
+        } else {
+            sell = solve(prices, false, i + 2,dp)+prices[i];
+        }
+
+        return dp[i][bought]=max({hold, buy, sell});
+    }
+
+    int maxProfit(vector<int>& prices) {
+        int n=prices.size();
+        vector<vector<int>> dp(n,vector<int>(2,-1));
+        return solve(prices, false, 0,dp);
+    }
+};
