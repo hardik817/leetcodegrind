@@ -1,0 +1,28 @@
+class Solution {
+public:
+   int nthSuperUglyNumber(int n, vector<int>& primes) {
+        vector<long long> dp(n);
+        dp[0] = 1;
+        
+        int size = primes.size();
+        vector<int> pointer(size, 0);
+        
+        for (int i = 1; i < n; i++) {
+            long long nextUgly = LLONG_MAX;
+            
+            for (int j = 0; j < size; j++) {
+                nextUgly = min(nextUgly, primes[j] * dp[pointer[j]]);
+            }
+            
+            dp[i] = nextUgly;
+            
+            for (int j = 0; j < size; j++) {
+                if (nextUgly == primes[j] * dp[pointer[j]]) {
+                    pointer[j]++;
+                }
+            }
+        }
+        
+        return dp[n - 1];
+    }
+};
