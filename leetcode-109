@@ -19,14 +19,17 @@
  *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
  * };
  */
-class Solution {
+class Solution
+{
 public:
-    TreeNode* solve(ListNode*& head, int start, int end) {
-        if (start > end) return NULL;
+    TreeNode *solve(ListNode *&head, int start, int end)
+    {
+        if (start > end)
+            return NULL;
 
         int mid = start + (end - start) / 2;
-        TreeNode* leftSubtree = solve(head, start, mid - 1);
-        TreeNode* root = new TreeNode(head->val);
+        TreeNode *leftSubtree = solve(head, start, mid - 1);
+        TreeNode *root = new TreeNode(head->val);
         head = head->next;
         root->right = solve(head, mid + 1, end);
         root->left = leftSubtree;
@@ -34,11 +37,13 @@ public:
         return root;
     }
 
-    TreeNode* sortedListToBST(ListNode* head) {
+    TreeNode *sortedListToBST(ListNode *head)
+    {
         int n = 0;
-        ListNode* temp = head;
+        ListNode *temp = head;
 
-        while (temp) {
+        while (temp)
+        {
             n++;
             temp = temp->next;
         }
@@ -46,3 +51,4 @@ public:
         return solve(head, 0, n - 1);
     }
 };
+lee
