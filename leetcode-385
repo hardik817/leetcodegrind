@@ -1,0 +1,28 @@
+class Solution
+{
+public:
+    NestedInteger deserialize(string s)
+    {
+        istringstream in(s);
+        return deserialize1(in);
+    }
+
+private:
+    NestedInteger deserialize1(istringstream &in)
+    {
+        int number;
+        if (in >> number)
+            return NestedInteger(number);
+        in.clear();
+        in.get();
+        NestedInteger list;
+        while (in.peek() != ']')
+        {
+            list.add(deserialize1(in));
+            if (in.peek() == ',')
+                in.get();
+        }
+        in.get();
+        return list;
+    }
+};
