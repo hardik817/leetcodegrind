@@ -1,0 +1,25 @@
+class Solution
+{
+public:
+    int solve(TreeNode *root, bool con)
+    {
+        if (root == NULL)
+        {
+            return 0;
+        }
+        if (root->left == nullptr and root->right == nullptr)
+        {
+            if (con)
+                return root->val;
+            else
+                return 0;
+        }
+        int leftsum = solve(root->left, true);
+        int rightsum = solve(root->right, false);
+        return leftsum + rightsum;
+    }
+    int sumOfLeftLeaves(TreeNode *root)
+    {
+        return solve(root, false);
+    }
+};
