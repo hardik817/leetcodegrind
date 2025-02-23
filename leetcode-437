@@ -1,0 +1,36 @@
+#include <unordered_map>
+using namespace std;
+
+// struct TreeNode {
+//     int val;
+//     TreeNode *left, *right;
+//     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+// };
+
+class Solution {
+public:
+    int pathSum(TreeNode* root, int targetSum) {
+        unordered_map<int, int> prefixSumCount;
+        prefixSumCount[0] = 1; // To handle cases where entire path matches targetSum
+        return dfs(root, 0, targetSum, prefixSumCount);
+    }
+
+private:
+    int dfs(TreeNode* node, int currentSum, int targetSum, unordered_map<int, int>& prefixSumCount) {
+        if (!node) return 0;
+
+        currentSum += node->val;
+        int count = prefixSumCount[currentSum - targetSum];
+
+        prefixSumCount[currentSum]++;
+        count += dfs(node->left, currentSum, targetSum, prefixSumCount);
+        count += dfs(node->right, currentSum, targetSum, prefixSumCount);
+
+        prefixSumCount[currentSum]--;
+        if (prefixSumCount[currentSum] == 0) {
+            prefixSumCount.erase(currentSum);
+        }
+
+        return count;
+    }
+};
