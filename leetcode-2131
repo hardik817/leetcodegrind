@@ -1,0 +1,42 @@
+class Solution {
+public:
+    bool ispalindrome(string s){
+        if(s[0]==s[1]){
+            return true;
+        }
+        return false;
+    }
+    int longestPalindrome(vector<string>& words) {
+        unordered_map<string,int> mp;
+        int temp=0;
+        int taken=0;
+        for(auto &s:words){
+            string t=s;
+            reverse(t.begin(),t.end());
+            if(mp.find(t)!=mp.end()){
+                temp=temp+4;
+                mp[t]--;
+                if(mp[t]==0){
+                    mp.erase(t);
+                }
+            }
+            else{
+                mp[s]++;
+            }
+        }
+        for(auto &m:mp){
+            string a=m.first;
+            int b=m.second;
+            if(ispalindrome(a) && b>1){
+                int c=b/2;
+                b=b-(2*c);
+                temp=temp+(2*c)*2;
+            }
+            if(ispalindrome(a) && taken==0 && b>0){
+                temp=temp+2;
+                taken=1;
+            }
+        }
+        return temp;
+    }
+};
