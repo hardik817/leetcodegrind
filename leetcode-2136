@@ -1,0 +1,24 @@
+class Solution
+{
+public:
+    int earliestFullBloom(vector<int> &plantime, vector<int> &growtime)
+    {
+        vector<pair<int, int>> pe;
+        for (int i = 0; i < growtime.size(); i++)
+        {
+            pair<int, int> temp = {growtime[i], plantime[i]};
+            pe.push_back(temp);
+        }
+        sort(pe.rbegin(), pe.rend());
+
+        int grow = 0;
+        int plant = 0;
+        for (auto &p : pe)
+        {
+            grow = max(grow, plant + p.first + p.second);
+            plant += p.second;
+        }
+
+        return grow;
+    }
+};
