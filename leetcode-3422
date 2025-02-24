@@ -1,0 +1,29 @@
+class Solution
+{
+public:
+    int maxDifference(string s)
+    {
+        unordered_map<char, int> mp;
+
+        for (char c : s)
+        {
+            mp[c]++;
+        }
+
+        int maxodd = 0;
+        int mineven = INT_MAX;
+
+        for (auto &a : mp)
+        {
+            if (a.second % 2 == 1)
+            {
+                maxodd = max(maxodd, a.second);
+            }
+            else
+            {
+                mineven = min(mineven, a.second);
+            }
+        }
+        return maxodd - mineven;
+    }
+};
