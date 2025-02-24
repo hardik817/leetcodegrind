@@ -1,0 +1,41 @@
+class Solution {
+public:
+    vector<string> summaryRanges(vector<int>& nums) {
+        vector<string>ans;
+        if(nums.size()==0)return ans;
+        long long small=nums[0];
+        long long big;
+        vector<vector<int>>allStore;
+        
+        int i=1;
+        for(;i<nums.size();i++){
+
+            if(nums[i]-1!=nums[i-1]){
+                big=nums[i-1];
+                string check="";
+                if(small==big){
+                    
+                    check=to_string(small);
+                    ans.push_back(check);
+                }
+                else{
+                    check=to_string(small)+"->"+to_string(big);
+                    ans.push_back(check);
+                }
+                small=nums[i];
+            }
+        }
+        big=nums[i-1];
+        string check="";
+               if(small==big){
+                    check=to_string(small);
+                    ans.push_back(check);
+                }
+                else{
+                    check=to_string(small)+"->"+to_string(big);
+                    ans.push_back(check);
+                }
+
+        return ans;
+    }
+};
