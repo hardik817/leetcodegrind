@@ -1,0 +1,23 @@
+class Solution {
+public:
+    int solve(vector<int> &nums,int target,int currsum,vector<int> &dp){
+        int cnt=0;
+        if(currsum>target){
+            return 0;
+        }
+        if(currsum==target){
+            return 1;
+        }
+        if(dp[currsum]!=-1){
+            return dp[currsum];
+        }
+        for(int j=0;j<nums.size();j++){
+            cnt+=solve(nums,target,currsum+nums[j],dp);
+        }
+        return dp[currsum]=cnt;
+    }
+    int combinationSum4(vector<int>& nums, int target) {
+        vector<int> dp(target+1,-1);
+        return solve(nums,target,0,dp);
+    }
+};
