@@ -1,0 +1,38 @@
+class Solution {
+public:
+    int maxAbsoluteSum(vector<int>& nums) {
+        int minsum=INT_MAX;
+        int currsum=0;
+        for(int i=0;i<nums.size();i++){
+            if(currsum==0 && nums[i]<0){
+                currsum=nums[i];
+                minsum=min(currsum,minsum);
+                continue;
+            }
+            else{
+                currsum+=nums[i];
+                minsum=min(currsum,minsum);
+                if(currsum>=0){
+                    currsum=0;
+                }
+            }
+        }
+        int maxsum=INT_MIN;
+        currsum=0;
+        for(int i=0;i<nums.size();i++){
+            if(currsum==0 && nums[i]>0){
+                currsum=nums[i];
+                maxsum=max(currsum,maxsum);
+                continue;
+            }
+            else{
+                currsum+=nums[i];
+                maxsum=max(currsum,maxsum);
+                if(currsum<=0){
+                    currsum=0;
+                }
+            }
+        }
+        return max(abs(maxsum),abs(minsum));
+    }
+};
