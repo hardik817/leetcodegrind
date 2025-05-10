@@ -1,0 +1,21 @@
+class Solution {
+public:
+    bool predictTheWinner(vector<int>& nums) {
+        int n = nums.size();
+        vector<vector<int>> dp(n, vector<int>(n, -1));
+        return canWin(nums, 0, n - 1, dp) >= 0;
+    }
+
+    int canWin(vector<int>& nums, int left, int right, vector<vector<int>>& dp) {
+        if (left > right) {
+            return 0;
+        }
+        if (dp[left][right] != -1) {
+            return dp[left][right];
+        }
+        int pickLeft = nums[left] - canWin(nums, left + 1, right, dp);
+        int pickRight = nums[right] - canWin(nums, left, right - 1, dp);
+        dp[left][right] = max(pickLeft, pickRight);
+        return dp[left][right];
+    }
+};
