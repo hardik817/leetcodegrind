@@ -1,0 +1,35 @@
+class Solution {
+public:
+    int dp[2][101][101];
+    int solve(int i,int persons,int M,vector<int>&piles,int n){
+        if(i>=n){
+            return 0;
+        }
+        if(dp[persons][i][M]!=-1){
+            return dp[persons][i][M];
+        }
+        int stones=0;
+        int result;
+        if(persons==1){
+            result=-1;
+        }
+        else{
+            result=INT_MAX;
+        }
+        for(int x=1;x<=min(2*M,n-i);x++){
+            stones+=piles[i+x-1];
+            if(persons==1){
+                result=max(result,stones+solve(i+x,0,max(M,x),piles,n));
+            }
+            else{
+                result=min(result,solve(i+x,1,max(M,x),piles,n));
+            }
+        }
+        return dp[persons][i][M]=result;
+    }
+    int stoneGameII(vector<int>& piles) {
+        memset(dp,-1,sizeof(dp));
+        int n=piles.size();
+        return solve(0,1,1,piles,n);
+    }
+};
