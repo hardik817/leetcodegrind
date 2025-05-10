@@ -1,0 +1,54 @@
+class Solution
+{
+public:
+    long long minSum(vector<int> &nums1, vector<int> &nums2)
+    {
+        int left = 0;
+        int right = 0;
+        long long int lsum = 0;
+        long long int rsum = 0;
+        for (int i : nums1)
+        {
+            if (i == 0)
+            {
+                left++;
+            }
+            lsum += i;
+        }
+        for (int i : nums2)
+        {
+            if (i == 0)
+            {
+                right++;
+            }
+            rsum += i;
+        }
+        if (left == 0 && lsum < rsum + right)
+        {
+            return -1;
+        }
+        if (right == 0 && lsum + left > rsum)
+        {
+            return -1;
+        }
+        if (rsum > lsum)
+        {
+            rsum += right;
+            if (rsum - lsum >= left)
+            {
+                return rsum;
+            }
+            return rsum + (left - (rsum - lsum));
+        }
+        else
+        {
+            lsum += left;
+            if (lsum - rsum >= right)
+            {
+                return lsum;
+            }
+            return lsum + (right - (lsum - rsum));
+        }
+        return lsum;
+    }
+};
