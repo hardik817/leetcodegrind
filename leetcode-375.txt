@@ -1,0 +1,22 @@
+class Solution {
+public:
+    int dp[205][205]; // memoization table
+
+    int solve(int i, int j) {
+        if (i >= j) return 0;
+        if (dp[i][j] != -1) return dp[i][j];
+
+        int res = INT_MAX;
+        for (int x = i; x <= j; ++x) {
+            int cost = x + max(solve(i, x - 1), solve(x + 1, j));
+            res = min(res, cost);
+        }
+
+        return dp[i][j] = res;
+    }
+
+    int getMoneyAmount(int n) {
+        memset(dp, -1, sizeof(dp));
+        return solve(1, n);
+    }
+};
