@@ -1,0 +1,36 @@
+class Solution
+{
+public:
+    unordered_map<int, bool> memo;
+
+    bool canWin(int mask, int mx, int total, int desired)
+    {
+        if (memo.count(mask))
+            return memo[mask];
+
+        for (int i = 0; i < mx; ++i)
+        {
+            if (!(mask & (1 << i)))
+            {
+                int next = mask | (1 << i);
+                if (i + 1 >= desired || !canWin(next, mx, total + i + 1, desired - (i + 1)))
+                {
+                    return memo[mask] = true;
+                }
+            }
+        }
+
+        return memo[mask] = false;
+    }
+
+    bool canIWin(int mx, int ds)
+    {
+        int sum = (mx * (mx + 1)) / 2;
+        if (sum < ds)
+            return false;
+        if (ds <= 0)
+            return true;
+
+        return canWin(0, mx, 0, ds);
+    }
+};
