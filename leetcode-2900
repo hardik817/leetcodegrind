@@ -1,0 +1,20 @@
+class Solution {
+public:
+    void solve(int i,vector<string>& words, vector<int>& groups,vector<string> &ans,int prev){
+        if(i>=words.size()){
+            return;
+        }
+        if(groups[i]!=prev){
+            ans.push_back(words[i]);
+            solve(i+1,words,groups,ans,groups[i]);
+        }
+        else{
+           solve(i+1,words,groups,ans,prev); 
+        }
+    }
+    vector<string> getLongestSubsequence(vector<string>& words, vector<int>& groups) {
+        vector<string> ans;
+        solve(0,words,groups,ans,-1);
+        return ans;
+    }
+};
