@@ -1,24 +1,52 @@
-class Solution {
+class Solution
+{
 public:
-    int minZeroArray(vector<int>& nums, vector<vector<int>>& queries) {
-        int n = nums.size(), sum = 0, queryCount = 0;
-        vector<int> diffArray(n + 1);
-
-        for (int i = 0; i < n; i++) {
-            while (sum + diffArray[i] < nums[i]) {
-                queryCount++;
-                if (queryCount > queries.size()) return -1;
-
-                int left = queries[queryCount - 1][0], right = queries[queryCount - 1][1], value = queries[queryCount - 1][2];
-                if (right >= i) {
-                    diffArray[max(left, i)] += value;
-                    if (right + 1 < diffArray.size()) {
-                        diffArray[right + 1] -= value;
-                    }
-                }
+    bool diffarr(vector<int> &nums, vector<vector<int>> &queries, int k)
+    {
+        int n = nums.size();
+        vector<int> temp(n + 1, 0); // +1 to avoid out-of-bounds
+        for (int i = 0; i < k; i++)
+        {
+            int dec = queries[i][2];
+            int l = queries[i][0];
+            int r = queries[i][1];
+            temp[l] += dec;
+            if (r + 1 < n)
+            {
+                temp[r + 1] -= dec;
             }
-            sum += diffArray[i];
         }
-        return queryCount;
+        for (int i = 1; i < n; i++)
+        {
+            temp[i] += temp[i - 1];
+        }
+        for (int i = 0; i < n; i++)
+        {
+            if (nums[i] - temp[i] > 0)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    int minZeroArray(vector<int> &nums, vector<vector<int>> &queries)
+    {
+        int l = 0, r = queries.size();
+        int k = -1;
+        while (l <= r)
+        {
+            int mid = l + (r - l) / 2;
+            if (diffarr(nums, queries, mid))
+            {
+                k = mid;
+                r = mid - 1;
+            }
+            else
+            {
+                l = mid + 1;
+            }
+        }
+        return k;
     }
 };
