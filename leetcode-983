@@ -1,0 +1,23 @@
+class Solution {
+public:
+    vector<int> dp; 
+    int mincostTickets(vector<int>& days, vector<int>& costs) {
+        int n=days.size();
+        int lastday=days[n-1];
+        vector<int> t(lastday+1,0);
+        unordered_set<int> st(begin(days),end(days));
+        for(int i=1;i<=lastday;i++){
+            if(st.find(i)==st.end()){
+                t[i]=t[i-1];
+                continue;
+            }
+            else{
+                int day1=t[i-1]+costs[0];
+                int day7=t[max(i-7,0)]+costs[1];
+                int day30=t[max(i-30,0)]+costs[2];
+                t[i]=min({day1,day7,day30});
+            }
+        }
+        return t[lastday];
+    }
+};

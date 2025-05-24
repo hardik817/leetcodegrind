@@ -1,0 +1,21 @@
+class Solution {
+public:
+    int t[501][501];
+    int solve(vector<int> &s,int i,int j){
+        if(j>=s.size()){
+            return 0;
+        }
+        if(t[i][j]!=-1){
+            return t[i][j];
+        }
+        int selected=s[j]*i+solve(s,i+1,j+1);
+        int notselected=solve(s,i,j+1);
+
+        return t[i][j]=max(selected,notselected);
+    }
+    int maxSatisfaction(vector<int>& s) {
+        memset(t,-1,sizeof(t));
+        sort(s.begin(),s.end());
+        return solve(s,1,0);
+    }
+};

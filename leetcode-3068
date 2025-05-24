@@ -1,0 +1,27 @@
+class Solution {
+public:
+    typedef long long ll;
+    long long maximumValueSum(vector<int>& nums, int k, vector<vector<int>>& edges) {
+        ll sum = 0;
+        int cnt = 0;
+        int minDelta = INT_MAX;
+        
+        for (int num : nums) {
+            int xorVal = num ^ k;
+            if (xorVal > num) {
+                sum += xorVal;
+                cnt++;
+                minDelta = min(minDelta, xorVal - num);  // actual gain
+            } else {
+                sum += num;
+                minDelta = min(minDelta, num - xorVal);  // potential flip loss
+            }
+        }
+
+        if (cnt % 2 == 0) {
+            return sum;
+        } else {
+            return sum - minDelta;
+        }
+    }
+};
