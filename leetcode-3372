@@ -1,0 +1,68 @@
+class Solution {
+private:
+    int bfsCount(vector<vector<int>>& adj, int start, int k, int size) {
+        vector<bool> visited(size, false);
+        queue<int> queue;
+        queue.push(start);
+        visited[start] = true;
+        int cnt = 0, dist = 0;
+
+        while (!queue.empty() && dist <= k) {
+            int sz = queue.size();
+            while (sz-- > 0) {
+                int node = queue.front();
+                queue.pop();
+                cnt++;
+                for (int ne : adj[node]) {
+                    if (!visited[ne]) {
+                        visited[ne] = true;
+                        queue.push(ne);
+                    }
+                }
+            }
+            dist++;
+        }
+        return cnt;
+    }
+
+public:
+    vector<int> maxTargetNodes(vector<vector<int>>& edges1, vector<vector<int>>& edges2, int k) {
+        int n = edges1.size();
+        int m = edges2.size();
+
+        vector<vector<int>> gr1(n + 1);
+        for (const auto& edge : edges1) {
+            int u = edge[0], v = edge[1];
+            gr1[u].push_back(v);
+            gr1[v].push_back(u);
+        }
+
+        vector<vector<int>> gr2(m + 1);
+        for (const auto& edge : edges2) {
+            int u = edge[0], v = edge[1];
+            gr2[u].push_back(v);
+            gr2[v].push_back(u);
+        }
+
+        vector<int> cnt1(n + 1);
+        for (int i = 0; i <= n; i++) {
+            cnt1[i] = bfsCount(gr1, i, k, n + 1);
+        }
+
+        int goldenNodeDisCnt = 0;
+        for (int v = 0; v <= m; v++) {
+            int cnt = bfsCount(gr2, v, k - 1, m + 1);
+            if (cnt > goldenNodeDisCnt) {
+                goldenNodeDisCnt = cnt;
+            }
+        }
+
+        vector<int> answer(n + 1);
+        for (int i = 0; i <= n; i++) {
+            int totalTargets = cnt1[i] + goldenNodeDisCnt;
+            answer[i] = totalTargets;
+        }
+
+        return answer;
+    }
+};

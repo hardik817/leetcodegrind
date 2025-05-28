@@ -1,0 +1,22 @@
+class Solution {
+public:
+    int minOperations(vector<int>& nums, int k) {
+        int xor1=0;
+        for(int i:nums){
+            xor1^=i;
+        }
+        int flips=0;
+        if(xor1==k){
+            return flips;
+        }
+        for(int i=0;i<20;i++){
+            int a=xor1>>i & 1;
+            int b=k>>i & 1;
+            if(a!=b){
+                flips++;
+            }
+        }
+
+        return flips;
+    }
+};
