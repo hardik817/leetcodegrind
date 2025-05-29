@@ -1,0 +1,61 @@
+class Solution {
+public:
+    pair<int, int> bfs(unordered_map<int, vector<int>>& graph, int start, unordered_map<int, int>& levelMap) {
+        queue<int> q;
+        q.push(start);
+        unordered_map<int, bool> visited;
+        visited[start] = true;
+        int evenCount = 0, oddCount = 0;
+        int level = 0;
+
+        while (!q.empty()) {
+            int size = q.size();
+            while (size--) {
+                int node = q.front(); q.pop();
+                levelMap[node] = level % 2;
+                if (level % 2 == 0) evenCount++;
+                else oddCount++;
+                for (int neighbor : graph[node]) {
+                    if (!visited[neighbor]) {
+                        visited[neighbor] = true;
+                        q.push(neighbor);
+                    }
+                }
+            }
+            level++;
+        }
+
+        return {evenCount, oddCount};
+    }
+
+    vector<int> maxTargetNodes(vector<vector<int>>& edges1, vector<vector<int>>& edges2) {
+        unordered_map<int, vector<int>> graph1, graph2;
+
+        for (auto& e : edges1) {
+            graph1[e[0]].push_back(e[1]);
+            graph1[e[1]].push_back(e[0]);
+        }
+
+        for (auto& e : edges2) {
+            graph2[e[0]].push_back(e[1]);
+            graph2[e[1]].push_back(e[0]);
+        }
+
+        unordered_map<int, int> levelMap1, levelMap2;
+
+        auto [even1, odd1] = bfs(graph1, 0, levelMap1);
+        auto [even2, odd2] = bfs(graph2, 0, levelMap2);
+
+        int maxFromGraph2 = max(even2, odd2);
+
+        vector<int> finalResult(levelMap1.size());
+        for (auto& [node, parity] : levelMap1) {
+            if (parity == 0)
+                finalResult[node] = even1 + maxFromGraph2;
+            else
+                finalResult[node] = odd1 + maxFromGraph2;
+        }
+
+        return finalResult;
+    }
+};
