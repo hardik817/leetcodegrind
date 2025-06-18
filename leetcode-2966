@@ -1,0 +1,25 @@
+class Solution {
+public:
+    vector<vector<int>> divideArray(vector<int>& nums, int k) {
+        sort(nums.begin(),nums.end());
+        vector<vector<int>> ans;
+        vector<int> temp;
+        int i=0;
+        int j=0;
+        while(j<nums.size()){
+            if(nums[j]-nums[i]>k){
+                return {};
+            }
+            temp.push_back(nums[j]);
+            if(j-i==2){
+                j++;
+                i=j;
+                ans.push_back(temp);
+                temp.clear();
+                continue;
+            }
+            j++;
+        }
+        return ans;
+    }
+};

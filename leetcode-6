@@ -5,30 +5,28 @@ public:
     {
         if (numRows == 1)
             return s;
-        vector<string> zigzag(numRows);
-        int i = 0, row = 0;
-        bool direction = true;
-        while (true)
+        string result = "";
+        for (int i = 0; i < numRows; ++i)
         {
-            if (direction)
+            int ind = i;
+            int inc1 = 0, inc2 = 0;
+            if (i == 0 || i == numRows - 1)
             {
-                while (row < numRows && i < s.size())
-                    zigzag[row++].push_back(s[i++]);
-                row = numRows - 2;
+                inc1 = (numRows * 2) - 2;
+                inc2 = inc1;
             }
             else
             {
-                while (row >= 0 && i < s.size())
-                    zigzag[row--].push_back(s[i++]);
-                row = 1;
+                inc1 = ((numRows - i - 1) * 2);
+                inc2 = (numRows * 2) - 2 - inc1;
             }
-            direction = !direction;
-            if (i >= s.size())
-                break;
+            while (ind < s.length())
+            {
+                result += s[ind];
+                ind += inc1;
+                swap(inc1, inc2);
+            }
         }
-        string ans = "";
-        for (auto str : zigzag)
-            ans += str;
-        return ans;
+        return result;
     }
 };
