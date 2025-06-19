@@ -1,0 +1,13 @@
+class Solution {
+public: 
+    int mod = 1e9 + 7;
+    int countOrders(int n) {
+        vector<long long> result(n + 1, 1);
+        for (int i = 1; i <= n; i++) {
+            int gaps = (i - 1) * 2 + 1;
+            long long possible = (1LL * gaps * i) % mod;  // Corrected formula
+            result[i] = (result[i - 1] * possible) % mod;
+        }
+        return result[n];
+    }
+};

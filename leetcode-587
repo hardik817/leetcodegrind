@@ -1,0 +1,43 @@
+class Solution {
+public:
+    int slopecomp(pair<int,int> p1, pair<int,int> p2, pair<int,int> p3){
+        int x1 = p1.first, y1 = p1.second;
+        int x2 = p2.first, y2 = p2.second;
+        int x3 = p3.first, y3 = p3.second;
+
+        return ((y3 - y2) * (x2 - x1)) - ((y2 - y1) * (x3 - x2));
+    }
+
+    vector<vector<int>> outerTrees(vector<vector<int>>& trees) {
+        sort(trees.begin(), trees.end());
+
+        deque<pair<int,int>> upper, lower;
+
+        for (auto& point : trees) {
+            pair<int, int> pt = {point[0], point[1]};
+
+            while (lower.size() >= 2 &&
+                   slopecomp(lower[lower.size() - 2], lower[lower.size() - 1], pt) < 0) {
+                lower.pop_back();
+            }
+
+            while (upper.size() >= 2 &&
+                   slopecomp(upper[upper.size() - 2], upper[upper.size() - 1], pt) > 0) {
+                upper.pop_back();
+            }
+
+            lower.push_back(pt);
+            upper.push_back(pt);
+        }
+
+        set<pair<int,int>> st;
+        for (auto& p : upper) st.insert(p);
+        for (auto& p : lower) st.insert(p);
+
+        vector<vector<int>> ans;
+        for (auto& p : st) {
+            ans.push_back({p.first, p.second});
+        }
+        return ans;
+    }
+};

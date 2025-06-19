@@ -1,0 +1,14 @@
+class Solution {
+public:
+    string convertToTitle(int n) {
+        string st = "";
+        while (n > 0) {
+            n--;  // Adjust for 1-based indexing
+            char t = (n % 26) + 'A';
+            st.push_back(t);
+            n /= 26;
+        }
+        reverse(st.begin(), st.end());
+        return st;
+    }
+};
