@@ -1,0 +1,42 @@
+class Solution {
+public:
+    bool winnerOfGame(string colors) {
+        int count_a = 0;
+        int count_b = 0;
+        int n = colors.size();
+
+        int i = 0, j = 0;
+        while (j < n) {
+            if (colors[j] == 'A') {
+                j++;
+            } else {
+                if (j - i >= 3) {
+                    count_a += (j - i - 2);
+                }
+                j++;
+                i = j;
+            }
+        }
+        if (j - i >= 3) {
+            count_a += (j - i - 2);
+        }
+
+        i = 0, j = 0;
+        while (j < n) {
+            if (colors[j] == 'B') {
+                j++;
+            } else {
+                if (j - i >= 3) {
+                    count_b += (j - i - 2);
+                }
+                j++;
+                i = j;
+            }
+        }
+        if (j - i >= 3) {
+            count_b += (j - i - 2);
+        }
+
+        return count_a > count_b;
+    }
+};
