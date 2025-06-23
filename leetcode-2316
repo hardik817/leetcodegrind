@@ -1,0 +1,50 @@
+class Solution {
+public:
+    long long countPairs(int n, vector<vector<int>>& edges) {
+        unordered_map<int, vector<int>> mp;
+
+        // Build adjacency list
+        for (auto &v : edges) {
+            mp[v[0]].push_back(v[1]);
+            mp[v[1]].push_back(v[0]);
+        }
+
+        vector<bool> visited(n, false);
+        vector<int> componentSizes;
+
+        // BFS to find connected components
+        for (int i = 0; i < n; i++) {
+            if (visited[i]) continue;
+
+            int count = 0;
+            queue<int> q;
+            q.push(i);
+            visited[i] = true;
+
+            while (!q.empty()) {
+                int top = q.front(); q.pop();
+                count++;
+
+                for (int neighbor : mp[top]) {
+                    if (!visited[neighbor]) {
+                        visited[neighbor] = true;
+                        q.push(neighbor);
+                    }
+                }
+            }
+
+            componentSizes.push_back(count);
+        }
+
+        // Calculate number of unreachable pairs
+        long long ans = 0;
+        long long remaining = n;
+
+        for (int size : componentSizes) {
+            remaining -= size;
+            ans += (long long)size * remaining;
+        }
+
+        return ans;
+    }
+};

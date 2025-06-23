@@ -1,0 +1,37 @@
+class Solution {
+public:
+    int minReorder(int n, vector<vector<int>>& connections) {
+        unordered_map<int, vector<pair<int, int>>> mp;
+
+        for (auto &v : connections) {
+            int from = v[0], to = v[1];
+            mp[from].push_back({to, 1});  // Original direction
+            mp[to].push_back({from, 0});  // Reverse (implied) direction
+        }
+
+        int flips = 0;
+        vector<bool> visited(n, false);
+        queue<int> q;
+
+        q.push(0);
+        visited[0] = true;
+
+        while (!q.empty()) {
+            int top = q.front();
+            q.pop();
+
+            for (auto &p : mp[top]) {
+                int neighbor = p.first;
+                int needsFlip = p.second;
+
+                if (!visited[neighbor]) {
+                    visited[neighbor] = true;
+                    flips += needsFlip;
+                    q.push(neighbor);
+                }
+            }
+        }
+
+        return flips;
+    }
+};

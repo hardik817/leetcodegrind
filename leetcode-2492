@@ -1,0 +1,33 @@
+class Solution {
+public:
+    int minScore(int n, vector<vector<int>>& roads) {
+        unordered_map<int, vector<pair<int, int>>> mp;
+        for (auto &v : roads) {
+            int a = v[0], b = v[1], c = v[2];
+            mp[a].push_back({b, c});
+            mp[b].push_back({a, c});
+        }
+
+        int minscore = INT_MAX;
+        vector<bool> vis(n + 1, false);
+        queue<int> q;
+
+        q.push(1);
+        vis[1] = true;
+
+        while (!q.empty()) {
+            int top = q.front();
+            q.pop();
+
+            for (auto &p : mp[top]) {
+                minscore = min(minscore, p.second);
+                if (!vis[p.first]) {
+                    vis[p.first] = true;
+                    q.push(p.first);
+                }
+            }
+        }
+
+        return minscore;
+    }
+};

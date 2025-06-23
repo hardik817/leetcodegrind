@@ -1,0 +1,25 @@
+class Solution {
+public:
+    int t[103][103];
+    int solve(vector<int>& cuts,int start,int end){
+        if(end-start<2){
+            return 0;
+        }
+        int result=INT_MAX;
+        if(t[start][end]!=-1){
+            return t[start][end];
+        }
+        for(int i=start+1;i<=end-1;i++){
+           int ans=(cuts[end]-cuts[start])+solve(cuts,start,i)+solve(cuts,i,end);
+           result=min(result,ans);
+        }
+        return t[start][end]=result;
+    }
+    int minCost(int n, vector<int>& cuts) {
+        memset(t,-1,sizeof(t));
+        sort(cuts.begin(),cuts.end());
+        cuts.insert(begin(cuts),0);
+        cuts.push_back(n);
+        return solve(cuts,0,cuts.size()-1);
+    }
+};
