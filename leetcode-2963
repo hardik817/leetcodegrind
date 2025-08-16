@@ -1,0 +1,41 @@
+class Solution {
+public:
+    const int MOD = 1e9 + 7;
+
+    long long modPow(long long base, long long exp) {
+        long long res = 1;
+        while (exp > 0) {
+            if (exp & 1) res = (res * base) % MOD;
+            base = (base * base) % MOD;
+            exp >>= 1;
+        }
+        return res;
+    }
+
+    int numberOfGoodPartitions(vector<int>& nums) {
+        unordered_map<int, pair<int,int>> mp;
+        int n = nums.size();
+        for (int i = 0; i < n; i++) {
+            if (mp.find(nums[i]) == mp.end()) {
+                mp[nums[i]] = {i, i};
+            } else {
+                mp[nums[i]].second = i;
+            }
+        }
+        vector<pair<int,int>> intervals;
+        for (auto &it : mp) {
+            intervals.push_back(it.second);
+        }
+        sort(intervals.begin(), intervals.end());
+        int count = 0, end = -1;
+        for (auto &range : intervals) {
+            if (range.first > end) {
+                count++;
+                end = range.second;
+            } else {
+                end = max(end, range.second);
+            }
+        }
+        return (int)modPow(2, count - 1);
+    }
+};
