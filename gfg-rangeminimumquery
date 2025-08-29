@@ -1,0 +1,38 @@
+/* The functions which
+builds the segment tree */
+void buildsegtree(int i,int l,int r,int segtree[],int arr[]){
+    if(l==r){
+        segtree[i]=arr[l];
+    }
+    else{
+        int mid=l+(r-l)/2;
+        buildsegtree(2*i+1,l,mid,segtree,arr);
+        buildsegtree(2*i+2,mid+1,r,segtree,arr);
+        
+        segtree[i]=min(segtree[2*i+1],segtree[2*i+2]);
+    }
+}
+int *constructST(int arr[], int n) {
+    // Your code here
+    int *segtree=new int[n*4];
+    buildsegtree(0,0,n-1,segtree,arr);
+    return segtree;
+}
+
+int query(int a,int b,int i,int l,int r,int st[]){
+    if(b<l || a>r){
+        return INT_MAX;
+    }
+    else if(a<=l && b>=r){
+        return st[i];
+    }
+    int mid=l+(r-l)/2;
+    return min(query(a,b,2*i+1,l,mid,st),query(a,b,2*i+2,mid+1,r,st));
+}
+
+/* The functions returns the
+ min element in the range
+ from a and b */
+int RMQ(int st[], int n, int a, int b) {
+    return query(a,b,0,0,n-1,st);
+}

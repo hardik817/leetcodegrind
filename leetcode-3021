@@ -1,0 +1,12 @@
+class Solution {
+public:
+    long long flowerGame(int n, int m) {
+        long long odd1,odd2,even1,even2;
+        odd1=ceil((float)n/2);
+        even1=n/2;
+        odd2=ceil((float)m/2);
+        even2=m/2;
+
+        return (odd1*even2)+(even1*odd2);
+    }
+};

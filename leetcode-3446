@@ -1,0 +1,31 @@
+class Solution {
+public:
+    vector<vector<int>> sortMatrix(vector<vector<int>>& grid) {
+        int n=grid.size();
+        int j=n-1;
+        while(j!=0){
+            vector<int> temp;
+            for(int i=0;i<n-j;i++){
+                temp.push_back(grid[i][j+i]);
+            }
+            sort(temp.begin(),temp.end());
+            for(int i=0;i<n-j;i++){
+                grid[i][j+i]=temp[i];
+            }
+            j--;
+        }
+        int i=0;
+        while(i!=n){
+            vector<int> temp;
+            for(int k=0;k<n-i;k++){
+                temp.push_back(grid[i+k][k]);
+            }
+            sort(temp.rbegin(),temp.rend());
+            for(int k=0;k<n-i;k++){
+                grid[i+k][k]=temp[k];
+            }
+            i++;
+        }
+        return grid;
+    }
+};
