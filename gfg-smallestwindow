@@ -1,0 +1,49 @@
+class Solution {
+  public:
+    string smallestWindow(string &s, string &p) {
+        if (p.size() > s.size()) return "";
+
+        vector<int> need(26, 0), have(26, 0);
+        int uniqueRequired = 0;
+
+        for (char c : p) {
+            if (need[c - 'a'] == 0) uniqueRequired++;
+            need[c - 'a']++;
+        }
+
+        int n = s.size();
+        int i = 0, j = 0;
+        int formed = 0;
+        int minlen = INT_MAX, start = 0;
+
+        while (j < n) {
+            char c = s[j];
+            have[c - 'a']++;
+
+            // Increment formed when current char count matches the need
+            if (have[c - 'a'] == need[c - 'a']) {
+                formed++;
+            }
+
+            // Shrink the window from left while it's valid
+            while (i <= j && formed == uniqueRequired) {
+                if (j - i + 1 < minlen) {
+                    minlen = j - i + 1;
+                    start = i;
+                }
+
+                char left = s[i];
+                have[left - 'a']--;
+                if (have[left - 'a'] < need[left - 'a']) {
+                    formed--;
+                }
+                i++;
+            }
+
+            j++;
+        }
+
+        if (minlen == INT_MAX) return ""; // no valid window
+        return s.substr(start, minlen);
+    }
+};
