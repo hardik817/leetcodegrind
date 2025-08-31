@@ -1,0 +1,68 @@
+class NumArray
+{
+public:
+    vector<int> tree;
+    int n;
+
+    void buildtree(int i, int l, int r, const vector<int> &nums)
+    {
+        if (l == r)
+        {
+            tree[i] = nums[l];
+            return;
+        }
+        int mid = l + (r - l) / 2;
+        buildtree(2 * i + 1, l, mid, nums);
+        buildtree(2 * i + 2, mid + 1, r, nums);
+        tree[i] = tree[2 * i + 1] + tree[2 * i + 2];
+    }
+
+    void updateTree(int idx, int l, int r, int pos, int val)
+    {
+        if (l == r)
+        {
+            tree[idx] = val;
+            return;
+        }
+        int mid = l + (r - l) / 2;
+        if (pos <= mid)
+        {
+            updateTree(2 * idx + 1, l, mid, pos, val);
+        }
+        else
+        {
+            updateTree(2 * idx + 2, mid + 1, r, pos, val);
+        }
+        tree[idx] = tree[2 * idx + 1] + tree[2 * idx + 2];
+    }
+
+    int sumquery(int idx, int l, int r, int ql, int qr)
+    {
+        if (qr < l || ql > r)
+            return 0;
+        if (ql <= l && r <= qr)
+            return tree[idx];
+        int mid = l + (r - l) / 2;
+        return sumquery(2 * idx + 1, l, mid, ql, qr) +
+               sumquery(2 * idx + 2, mid + 1, r, ql, qr);
+    }
+
+    NumArray(vector<int> &nums)
+    {
+        n = nums.size();
+        if (n == 0)
+            return;
+        tree.resize(4 * n, 0);
+        buildtree(0, 0, n - 1, nums);
+    }
+
+    void update(int index, int val)
+    {
+        updateTree(0, 0, n - 1, index, val);
+    }
+
+    int sumRange(int left, int right)
+    {
+        return sumquery(0, 0, n - 1, left, right);
+    }
+};
