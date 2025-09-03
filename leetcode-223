@@ -1,0 +1,26 @@
+class Solution {
+public:
+    int computeArea(int ax1, int ay1, int ax2, int ay2, int bx1, int by1, int bx2, int by2) {
+        int overlap=0;
+        if((bx2<=ax1 || bx1>=ax2) || (by2<=ay1 || by1>=ay2)){
+            overlap=0;
+        }
+        else{
+        vector<pair<int,int>> ans;
+        ans.push_back({ax1,ax2});
+        ans.push_back({bx1,bx2});
+        ans.push_back({ay1,ay2});
+        ans.push_back({by1,by2});
+
+        vector<int> a;
+        a.push_back(max(ans[0].first,ans[1].first));
+        a.push_back(min(ans[0].second,ans[1].second));
+        a.push_back(max(ans[2].first,ans[3].first));
+        a.push_back(min(ans[2].second,ans[3].second));
+
+        overlap=(a[3]-a[2])*(a[1]-a[0]);
+        }
+        
+        return (ax2-ax1)*(ay2-ay1)+(bx2-bx1)*(by2-by1)-overlap;
+    }
+};

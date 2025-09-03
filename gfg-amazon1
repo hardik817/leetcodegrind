@@ -1,0 +1,20 @@
+class Solution {
+  public:
+    int isSuperSimilar(int n, int m, vector<vector<int>>& mat, int x) {
+        x = x % m;
+        if(x == 0) return 1;
+
+        for(int i = 0; i < n; i++){
+            vector<int> shifted(m);
+            if(i % 2 == 0){
+                for(int j = 0; j < m; j++)
+                    shifted[(j + x) % m] = mat[i][j];
+            } else {
+                for(int j = 0; j < m; j++)
+                    shifted[(j - x + m) % m] = mat[i][j];
+            }
+            if(shifted != mat[i]) return 0;
+        }
+        return 1;
+    }
+};

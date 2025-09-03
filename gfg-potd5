@@ -1,0 +1,58 @@
+class Solution {
+  public:
+    int sumOfModes(vector<int>& arr, int k) {
+        struct cmp {
+            bool operator()(const pair<int,int>& p1, const pair<int,int>& p2) const {
+                if (p1.first == p2.first) return p1.second < p2.second;
+                return p1.first > p2.first; // higher frequency first
+            }
+        };
+
+        unordered_map<int,int> mp;
+        set<pair<int,int>, cmp> s;
+        int n = arr.size();
+        int sum = 0;
+
+        // First window
+        for (int i = 0; i < k; i++) {
+            int o = mp[arr[i]];
+            mp[arr[i]]++;
+
+            if (s.find({o, arr[i]}) != s.end()) {
+                s.erase({o, arr[i]});
+            }
+            s.insert({mp[arr[i]], arr[i]});
+        }
+        sum += (*s.begin()).second;
+
+        int i = 0, j = k;
+        while (j < n) {
+            int out = arr[i];
+            int in = arr[j];
+
+            int o = mp[out];
+            s.erase({o, out});
+            if (--mp[out] == 0) {
+                mp.erase(out);
+            } else {
+                s.insert({mp[out], out});
+            }
+
+            if (mp.find(in) != mp.end()) {
+                o = mp[in];
+                s.erase({o, in});
+                mp[in]++;
+                s.insert({mp[in], in});
+            } else {
+                mp[in] = 1;
+                s.insert({1, in});
+            }
+
+            sum += (*s.begin()).second;
+            i++;
+            j++;
+        }
+
+        return sum;
+    }
+};

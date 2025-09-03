@@ -1,0 +1,41 @@
+class LRUCache {
+public:
+    unordered_map<int, pair<int,int>> mp;
+    map<int,int> mp1;                    
+    int t = 0;
+    int len;
+
+    LRUCache(int cap) {
+        len = cap;
+    }
+
+    int get(int key) {
+        t++;
+        if (mp.find(key) != mp.end()) {
+            auto temp = mp[key];
+            mp1.erase(temp.second);
+            mp[key] = {temp.first, t};
+            mp1[t] = key;
+            return temp.first;
+        }
+        return -1;
+    }
+
+    void put(int key, int value) {
+        t++;
+        if (mp.find(key) != mp.end()) {
+            auto temp = mp[key];
+            mp1.erase(temp.second);
+            mp[key] = {value, t};
+            mp1[t] = key;
+        } else {
+            if ((int)mp.size() >= len) {
+                int oldKey = mp1.begin()->second;
+                mp.erase(oldKey);
+                mp1.erase(mp1.begin());
+            }
+            mp[key] = {value, t};
+            mp1[t] = key;
+        }
+    }
+};

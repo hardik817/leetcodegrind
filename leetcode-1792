@@ -1,0 +1,33 @@
+class Solution {
+public:
+    double maxAverageRatio(vector<vector<int>>& classes, int extraStudents) {
+        auto gain = [](int p, int t) {
+            return (double)(p + 1) / (t + 1) - (double)p / t;
+        };
+
+        priority_queue<pair<double,int>> pq;
+        int n = classes.size();
+
+        for (int i = 0; i < n; i++) {
+            pq.push({gain(classes[i][0], classes[i][1]), i});
+        }
+
+        while (extraStudents > 0) {
+            auto [g, i] = pq.top();
+            pq.pop();
+
+            classes[i][0] += 1;
+            classes[i][1] += 1;
+
+            pq.push({gain(classes[i][0], classes[i][1]), i});
+            extraStudents--;
+        }
+
+        double ans = 0.0;
+        for (int i = 0; i < n; i++) {
+            ans += (double)classes[i][0] / classes[i][1];
+        }
+
+        return ans / n;
+    }
+};
