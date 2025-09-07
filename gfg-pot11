@@ -1,0 +1,48 @@
+/*Linked list Node structure
+
+struct Node
+{
+    int data;
+    Node* next;
+
+    Node(int x){
+        data = x;
+        next = NULL;
+    }
+
+};
+*/
+
+  class Compare{
+        public:
+        bool operator()(Node* a, Node* b){
+            return a->data > b->data;
+        }
+    };
+    
+
+class Solution {
+  
+  public:
+    Node* mergeKLists(vector<Node*>& arr) {
+      
+        priority_queue<Node*, vector<Node*> ,Compare> p(arr.begin(), arr.end());
+        Node* dummy= new Node(-1);
+        Node* temp= dummy;
+        
+        while(!p.empty()){
+            Node* top= p.top();
+            p.pop();
+            if(top->next!= nullptr){
+                p.push(top->next);
+            }
+            temp->next= top;
+            temp= temp->next;
+            
+        }
+        return dummy->next;
+        
+        
+        
+    }
+};

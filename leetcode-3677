@@ -1,0 +1,40 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+class Solution {
+public:
+    long long countBinaryPalindromes(long long n) {
+        if (n == 0) return 1;
+
+        long long possible = 1;
+        int index = (int)log2(n) + 1;
+
+        for (int len = 1; len < index; len++) {
+            int n1 = (len - 1) / 2;
+            possible += (1LL << n1);
+        }
+
+        int half = (index + 1) / 2;
+        long long start = 1LL << (half - 1);
+
+        long long prefix = n >> (index / 2);
+        long long pal = makePalindrome(prefix, index % 2);
+
+        long long add = prefix - start;
+        if (pal <= n) add++;
+        possible += add;
+
+        return possible;
+    }
+
+private:
+    long long makePalindrome(long long prefix, bool odd) {
+        long long res = prefix;
+        if (odd) prefix >>= 1;
+        while (prefix > 0) {
+            res = (res << 1) | (prefix & 1);
+            prefix >>= 1;
+        }
+        return res;
+    }
+};

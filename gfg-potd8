@@ -1,0 +1,35 @@
+class Solution
+{
+public:
+    Node *reverseKGroup(Node *head, int k)
+    {
+        if (!head)
+            return nullptr;
+
+        Node *tail = head;
+        for (int i = 0; i < k; ++i)
+        {
+            if (!tail)
+                break;
+            tail = tail->next;
+        }
+
+        Node *newHead = reverse(head, tail);
+        head->next = reverseKGroup(tail, k);
+        return newHead;
+    }
+
+private:
+    Node *reverse(Node *cur, Node *end)
+    {
+        Node *prev = nullptr;
+        while (cur != end)
+        {
+            Node *next = cur->next;
+            cur->next = prev;
+            prev = cur;
+            cur = next;
+        }
+        return prev;
+    }
+};

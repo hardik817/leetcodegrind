@@ -1,0 +1,19 @@
+class Solution {
+public:
+    int minOperations(string s) {
+        vector<int> arr(27,0);
+        for(char c:s){
+            arr[c-'a']++;
+        }
+        int trans=0;
+        for(int i=1;i<26;i++){
+            if(arr[i]==0) continue;
+            else {
+                trans++;
+                arr[i+1]+=arr[i];
+            }
+        }
+
+        return trans;
+    }
+};

@@ -1,0 +1,27 @@
+class Solution {
+  public:
+    int lengthOfLoop(Node *head) {
+        if (!head) return 0;
+
+        Node* slow = head;
+        Node* fast = head;
+
+        while (fast && fast->next) {
+            slow = slow->next;
+            fast = fast->next->next;
+
+            if (slow == fast) {
+                int i = 1;
+                Node* temp = slow->next;
+                while (temp != slow) {
+                    i++;
+                    temp = temp->next;
+                }
+                return i;
+            }
+        }
+
+        // No loop
+        return 0;
+    }
+};

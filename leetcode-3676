@@ -1,0 +1,47 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+class Solution {
+public:
+    long long bowlSubarrays(vector<int>& nums) {
+        int n = nums.size();
+        vector<int> nextgreater(n, n);
+        vector<int> prevgreater(n, -1);
+
+        // Compute Next Greater
+        stack<int> st;
+        for (int i = n - 1; i >= 0; i--) {
+            while (!st.empty() && nums[st.top()] <= nums[i]) {
+                st.pop();
+            }
+            if (!st.empty()) nextgreater[i] = st.top();
+            st.push(i);
+        }
+
+        // Clear stack for prev greater
+        while (!st.empty()) st.pop();
+
+        // Compute Previous Greater
+        for (int i = 0; i < n; i++) {
+            while (!st.empty() && nums[st.top()] < nums[i]) {
+                st.pop();
+            }
+            if (!st.empty()) prevgreater[i] = st.top();
+            st.push(i);
+        }
+
+        long long possible = 0;
+        for (int i = 0; i < n; i++) {
+            int upper = nextgreater[i];
+            int lower = prevgreater[i];
+            
+            int rightLen = upper - i+1;
+            int leftLen = i - lower+1;
+
+            if (rightLen >= 3 && upper!=n) possible++;
+            if (leftLen >= 3  && lower!=-1) possible++;
+        }
+
+        return possible;
+    }
+};
