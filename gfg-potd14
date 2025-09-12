@@ -1,0 +1,38 @@
+#include <string>
+#include <vector>
+#include <algorithm> // Required for std::swap
+
+class Solution {
+public:
+    std::string largestSwap(std::string s) {
+        // In C++, std::string is mutable, so we can work on it directly.
+        int n = s.length();
+        
+        // Use std::vector in C++ for dynamic arrays.
+        std::vector<int> last(10);
+        
+        // Store the last index of occurrence for each digit (0-9).
+        for(int i = 0; i < n; i++){
+            last[s[i] - '0'] = i;
+        }
+        
+        // Find the first position from the left that can be swapped for a larger digit.
+        for(int i = 0; i < n; i++){
+            int current_digit = s[i] - '0';
+            
+            // Look for the largest possible digit (from 9 down) to swap with.
+            for(int d = 9; d > current_digit; d--){
+                // If a larger digit 'd' appears later in the string...
+                if(last[d] > i){
+                    // ...swap the current character with the last occurrence of that larger digit.
+                    std::swap(s[i], s[last[d]]);
+                    // We only perform one swap, so return immediately.
+                    return s;
+                }
+            }
+        }
+        
+        // If no swap was made (string is already in largest possible order), return original.
+        return s;
+    }
+};
