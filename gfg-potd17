@@ -1,0 +1,44 @@
+class Solution {
+  public:
+    int minCost(int n, int m, vector<int>& x, vector<int>& y) {
+        //  code here
+        sort(x.rbegin(),x.rend());
+        sort(y.rbegin(),y.rend());
+        
+        int horizontal=1;
+        int vertical=1;
+        int i=0;
+        int j=0;
+        int cost=0;
+        while(i<n-1 || j<m-1){
+        if(i==n-1){
+            cost+=x[j]*horizontal;
+                vertical++;
+                j++;
+                continue;
+        }
+        else if(j==m-1){
+             cost+=y[i]*vertical;
+                horizontal++;
+                i++;
+                continue;
+        }
+        else{
+            if(y[i]<x[j]){
+                cost+=x[j]*horizontal;
+                vertical++;
+                j++;
+                continue;
+            }
+            else{
+                cost+=y[i]*vertical;
+                horizontal++;
+                i++;
+                continue;
+            }
+        }
+            
+        }
+        return cost;
+    }
+};

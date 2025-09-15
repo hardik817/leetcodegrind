@@ -1,0 +1,68 @@
+class DSU {
+public:
+    vector<int> par, sz;
+    DSU(int n) {
+        par.resize(n);
+        sz.resize(n, 1);
+        for (int i = 0; i < n; i++) par[i] = i;
+    }
+    int Find(int a) {
+        return par[a] == a ? a : par[a] = Find(par[a]);
+    }
+    void Union(int a, int b) {
+        int ra = Find(a), rb = Find(b);
+        if (ra == rb) return;
+        if (sz[ra] < sz[rb]) {
+            par[ra] = rb;
+            sz[rb] += sz[ra];
+        } else {
+            par[rb] = ra;
+            sz[ra] += sz[rb];
+        }
+    }
+};
+
+class Solution {
+public:
+    vector<int> hitBricks(vector<vector<int>>& grid, vector<vector<int>>& hits) {
+        int m = grid.size(), n = grid[0].size(), roof = m * n;
+        DSU dsu(m * n + 1);
+        vector<vector<int>> copy = grid;
+        for (auto &hit : hits) {
+            int r = hit[0], c = hit[1];
+            if (grid[r][c] == 1) copy[r][c] = 0;
+        }
+        auto index = [&](int i, int j) { return i * n + j; };
+        for (int i = 0; i < m; i++){
+            for (int j = 0; j < n; j++){
+                if (copy[i][j] == 1) {
+                    if (i == 0) dsu.Union(index(i, j), roof);
+                    int dirs[4][2] = {{-1, 0}, {0, -1},{1,0},{0,1}};
+                    for (auto &d : dirs) {
+                        int ni = i + d[0], nj = j + d[1];
+                        if (ni >= 0 && nj >= 0 && ni < m && nj < n && copy[ni][nj] == 1)
+                            dsu.Union(index(i, j), index(ni, nj));
+                    }
+                }
+            }
+        }
+        int hitsSize = hits.size();
+        vector<int> ans(hitsSize, 0);
+        vector<vector<int>> dir = {{0,1},{1,0},{0,-1},{-1,0}};
+        for (int k = hitsSize - 1; k >= 0; k--) {
+            int i = hits[k][0], j = hits[k][1];
+            if (grid[i][j] == 0) continue;
+            int prevRoofSize = dsu.sz[dsu.Find(roof)];
+            copy[i][j] = 1;
+            if (i == 0) dsu.Union(index(i, j), roof);
+            for (auto &d : dir) {
+                int ni = i + d[0], nj = j + d[1];
+                if (ni >= 0 && ni < m && nj >= 0 && nj < n && copy[ni][nj] == 1)
+                    dsu.Union(index(i, j), index(ni, nj));
+            }
+            int newRoofSize = dsu.sz[dsu.Find(roof)];
+            ans[k] = max(0, newRoofSize - prevRoofSize - 1);
+        }
+        return ans;
+    }
+};
