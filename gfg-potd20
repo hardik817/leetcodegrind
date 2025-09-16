@@ -1,0 +1,45 @@
+class Solution
+{
+public:
+    int evaluatePostfix(vector<string> &arr)
+    {
+        stack<int> st;
+
+        for (string &c : arr)
+        {
+            if (c == "+" || c == "-" || c == "*" || c == "/" || c == "^")
+            {
+                int a = st.top();
+                st.pop();
+                int b = st.top();
+                st.pop();
+
+                if (c == "+")
+                    st.push(b + a);
+                else if (c == "-")
+                    st.push(b - a);
+                else if (c == "*")
+                    st.push(b * a);
+                else if (c == "/")
+                {
+                    int res = b / a;
+                    if ((b % a != 0) && ((b < 0) ^ (a < 0)))
+                    {
+                        res--; // adjust toward floor
+                    }
+                    st.push(res);
+                }
+                else if (c == "^")
+                {
+                    st.push((int)pow(b, a)); // exponentiation
+                }
+            }
+            else
+            {
+                st.push(stoi(c)); // operand
+            }
+        }
+
+        return st.top();
+    }
+};
