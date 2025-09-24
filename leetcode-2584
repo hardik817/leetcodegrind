@@ -1,0 +1,49 @@
+class Solution {
+    vector<int> spf;
+    int maxn = 1e6 + 1;
+
+public:
+    int findValidSplit(vector<int>& nums) {
+        int n = nums.size();
+        sieve();
+
+        vector<int> last_pos(maxn, 0);
+        for (int i = 0; i < n; i++) {
+            int curr = nums[i];
+            while (curr != 1) {
+                int s = spf[curr];
+                while (curr % s == 0) {
+                    curr /= s;
+                }
+                last_pos[s] = i;
+            }
+        }
+
+        int pos = 0, last = 0;
+        for (; pos <= last; pos++) {
+            int curr = nums[pos];
+            while (curr != 1) {
+                int s = spf[curr];
+                while (curr % s == 0) {
+                    curr /= s;
+                }
+                last = max(last, last_pos[s]);
+            }
+        }
+        return last == n - 1 ? -1 : last;
+    }
+
+    void sieve() {
+        spf.resize(maxn);
+        for (int i = 1; i < maxn; i++) spf[i] = i;
+        for (int i = 2; i * i < maxn; i++) {
+            if (spf[i] == i) {
+                for (int j = i * i; j < maxn; j += i) {
+                    if (spf[j] == j) {
+                        spf[j] = i;
+                    }
+                }
+            }
+        }
+    }
+};

@@ -1,0 +1,18 @@
+class Solution {
+  public:
+    int minParentheses(string& s) {
+        // code here
+        int invalid=0;
+        stack<char> st;
+        for(char c:s){
+            if(c=='('){
+                st.push(c);
+            }
+            else{
+                if(!st.empty()) st.pop();
+                else invalid++;
+            }
+        }
+        return invalid+st.size();
+    }
+};
