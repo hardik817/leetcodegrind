@@ -1,0 +1,21 @@
+class Solution {
+public:
+    int minKBitFlips(vector<int>& arr, int k) {
+        int n = arr.size();
+        vector<int> diff(n+1, 0); 
+        int isFlipped = 0, count = 0;
+
+        for (int i = 0; i < n; i++) {
+            if (i >= k) {
+                isFlipped ^= diff[i];
+            }
+            if ((arr[i] ^ isFlipped) == 0) { 
+                if (i + k > n) return -1;
+                count++;
+                isFlipped ^= 1;
+                diff[i + k] ^= 1;
+            }
+        }
+        return count;
+    }
+};
