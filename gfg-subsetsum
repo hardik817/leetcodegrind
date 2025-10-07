@@ -1,0 +1,34 @@
+class Solution
+{
+    // MEMOIZATION
+public:
+    bool fun(int i, int sum, vector<int> &arr, int n, vector<vector<int>> &dp)
+    {
+        if (i == n)
+        {
+            if (sum == 0)
+                return true;
+            else
+                return false;
+        }
+
+        if (dp[i][sum] != -1)
+            return dp[i][sum];
+        int take = false;
+        if (sum >= arr[i])
+        {
+            take = fun(i + 1, sum - arr[i], arr, n, dp);
+        }
+        int nottake = fun(i + 1, sum, arr, n, dp);
+
+        return dp[i][sum] = take || nottake;
+    }
+
+    bool isSubsetSum(vector<int> &arr, int sum)
+    {
+        int n = arr.size();
+        vector<vector<int>> dp(n, vector<int>(sum + 1, -1));
+
+        return fun(0, sum, arr, n, dp);
+    }
+};

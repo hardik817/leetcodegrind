@@ -1,0 +1,17 @@
+class Solution {
+public:
+    int maxTotalReward(vector<int>& nums) {
+        bitset<100001> dp,temp,mask;
+        dp[0]=1;
+        sort(nums.begin(),nums.end());
+        int val=0;
+        for(int num:nums){
+            while(val<num) mask[val++]=1;
+            temp=dp&mask;
+            dp|=(temp<<num);
+        }
+        int res=1e5;
+        while(!dp[res]) --res;
+        return res;
+    }
+};

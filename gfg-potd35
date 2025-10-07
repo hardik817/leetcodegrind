@@ -1,0 +1,35 @@
+class Solution
+{
+public:
+    vector<vector<int>> ans;
+    vector<int> path;
+    void backtrack(map<int, int> &mp, int n)
+    {
+        if (path.size() == n)
+        {
+            ans.push_back(path);
+            return;
+        }
+        for (auto it : mp)
+        {
+            int num = it.first;
+            int freq = it.second;
+            if (freq > 0)
+            {
+                path.push_back(num);
+                mp[num]--;
+                backtrack(mp, n);
+                mp[num]++;
+                path.pop_back();
+            }
+        }
+    }
+    vector<vector<int>> uniquePerms(vector<int> &arr)
+    {
+        map<int, int> mp;
+        for (auto it : arr)
+            mp[it]++;
+        backtrack(mp, arr.size());
+        return ans;
+    }
+};

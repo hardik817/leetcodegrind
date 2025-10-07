@@ -1,0 +1,16 @@
+class Solution
+{
+public:
+    int kItemsWithMaximumSum(int numones, int numzeros, int numnegones, int k)
+    {
+        if (k <= numones)
+        {
+            return k;
+        }
+        if (k <= numones + numzeros)
+        {
+            return numones;
+        }
+        return (numones) - (k - numones - numzeros);
+    }
+};

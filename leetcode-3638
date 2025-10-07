@@ -1,0 +1,17 @@
+class Solution {
+public:
+    int maxBalancedShipments(vector<int>& weight) {
+        int currmax=0;
+        int count=0;
+        for(int i:weight){
+            if(i<currmax){
+                count++;
+                currmax=0;
+            }
+            else{
+                currmax=i;
+            }
+        }
+        return count;
+    }
+};

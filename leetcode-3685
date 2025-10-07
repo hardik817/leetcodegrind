@@ -1,0 +1,44 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+class Solution {
+public:
+    vector<bool> subsequenceSumAfterCapping(vector<int>& nums, int k) {
+        int n = nums.size();
+        sort(nums.begin(), nums.end());
+
+        const int MAXK = 4000;
+        bitset<MAXK + 1> dp;
+        dp.reset();
+        dp[0] = 1;
+
+        vector<bool> ans(n, false);
+        int idx = 0;
+        long long sumSmall = 0;
+
+        for (int x = 1; x <= n; ++x) {
+            while (idx < n && nums[idx] <= x) {
+                dp |= (dp << nums[idx]);
+                sumSmall += nums[idx];
+                ++idx;
+            }
+
+            int cntGreater = n - idx;  
+            long long maxPossible = sumSmall + 1LL * cntGreater * x;
+            if (maxPossible < k) {                 
+                ans[x - 1] = false;
+                continue;
+            }
+
+            bool ok = false;
+            int maxT = min(cntGreater, k / x);
+            for (int t = 0; t <= maxT; ++t) {
+                int rem = k - t * x;
+                if (rem >= 0 && dp[rem]) { ok = true; break; }
+            }
+            ans[x - 1] = ok;
+        }
+
+        return ans;
+    }
+};

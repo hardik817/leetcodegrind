@@ -1,0 +1,24 @@
+class Solution {
+public:
+    int minimizeTheDifference(vector<vector<int>>& mat, int target) {
+        bitset<4901> dp,temp;
+        dp[0]=1;
+        int n=mat.size();
+        int m=mat[0].size();
+
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                temp|=dp<<mat[i][j];
+            }
+            dp=temp;
+            temp.reset();
+        }
+        int ans=INT_MAX;
+        for(int i=0;i<4901;i++ ){
+            if(dp[i]){
+                ans=min(ans,abs(target-i));
+            }
+        }
+        return ans;
+    }
+};
