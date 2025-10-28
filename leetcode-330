@@ -1,0 +1,23 @@
+class Solution
+{
+public:
+    int minPatches(vector<int> &nums, int n)
+    {
+        long long total = 0; // use long long to avoid overflow
+        int patches = 0, i = 0;
+
+        while (total < n)
+        {
+            if (i < nums.size() && nums[i] <= total + 1)
+            {
+                total += nums[i++];
+            }
+            else
+            {
+                total += total + 1;
+                patches++;
+            }
+        }
+        return patches;
+    }
+};

@@ -1,0 +1,29 @@
+class Solution {
+public:
+    string sortString(string s) {
+        int count=0;
+        vector<int> ch(26,0);
+        for(char c:s){
+            ch[c-'a']++;
+            count++;
+        }
+        string ans="";
+        while(count!=0){
+            for(int i=0;i<26;i++){
+                if(ch[i]!=0){
+                    ans.push_back(i+'a');
+                    count--;
+                    ch[i]--;
+                }
+            }
+            for(int i=25;i>=0;i--){
+                if(ch[i]!=0){
+                    ans.push_back(i+'a');
+                    count--;
+                    ch[i]--;
+                }
+            }
+        }
+        return ans;
+    }
+};

@@ -1,0 +1,19 @@
+class Solution {
+public:
+    int minimumAddedCoins(vector<int>& coins, int target) {
+        sort(coins.begin(), coins.end());
+        long long total = 0; // use long long to prevent overflow
+        int count = 0, i = 0, n = coins.size();
+
+        while (total < target) {
+            if (i < n && coins[i] <= total + 1) {
+                total += coins[i++];
+            } else {
+                // Need to add a coin of value total + 1
+                count++;
+                total += total + 1;
+            }
+        }
+        return count;
+    }
+};

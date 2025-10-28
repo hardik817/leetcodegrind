@@ -1,0 +1,16 @@
+class Solution {
+public:
+    int getMaximumConsecutive(vector<int>& coins) {
+        sort(coins.begin(),coins.end());
+        int total=0;
+        for(int i:coins){
+            if(total+1<i){
+                break;
+            }
+            else{
+                total+=i;
+            }
+        }
+        return total+1;
+    }
+};

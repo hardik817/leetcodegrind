@@ -1,0 +1,22 @@
+class Solution {
+public:
+    string findReplaceString(string s, vector<int>& indices, vector<string>& sources, vector<string>& targets) {
+        int n = s.length();
+        vector<int> match(n, -1);
+        for (int i = 0; i < indices.size(); ++i) {
+            int idx = indices[i];
+            const string& src = sources[i];
+            if (s.substr(idx, src.length()) == src) match[idx] = i;
+        }
+        string res;
+        for (int i = 0; i < n; ++i) {
+            if (match[i] >= 0) {
+                int k = match[i];
+                res += targets[k];
+                i += sources[k].length() - 1;
+            } 
+            else res += s[i];
+        }
+        return res;
+    }
+};

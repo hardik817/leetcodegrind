@@ -1,0 +1,63 @@
+class Solution {
+public:
+
+    vector<pair<int, int>> adj[50001];
+    map<int, vector<int>> last_seen; // last_seen[i] tells the node of last occurence of color i
+    int depth_of_node[50001]; // depth of root is taken as 1
+    int length_till_node[50001]; // for any node x, beefore dfs traversal to its children length_till_node[x] stores the length of path from root till x
+    // however after dfs travesal, length_till_node[x] stores length of path till x + lenghth of immediately next edge from x to reauired child
+
+    void dfs(int node, int par, int length, int depth, int current_ancestor, vector<int> &result, vector<int> &nums){
+        length_till_node[node] = length;
+        depth_of_node[node] = depth;
+
+        vector<int> temp(2);
+
+        int pre_ancestor = -1; // pre_ancestor is the uppermost possible node such that path from below it to node will not contain duplicate occurence of nums[node] (or you say color of node)
+        int ancestor_depth = 0; // ancestor_depth is depth of pre_ancestor, by defaut its 0 ,because suppose path from root to node x has colors as 1-2-4-3-2-3-6 , where 6 is the color of node x , so here depth of node x is 7 , and there is no occurence of 6 before in the path so default depth will be 0. Also in this case pre_ancestor will be -1 (not existent)
+        // However if path from root to node x has colors as 1-2-4-3-2-3 , where 3 is the color of node x, then pre_ancestor will be grandfather of x and ancestor_depth = 4.
+        int ancestor_length = 0;
+
+        if(last_seen[nums[node]].size()) pre_ancestor = last_seen[nums[node]].back();
+
+        if(current_ancestor == -1 || (pre_ancestor != -1 && depth_of_node[pre_ancestor] > depth_of_node[current_ancestor])){
+            current_ancestor = pre_ancestor;
+        }
+
+        if(current_ancestor != -1){
+            ancestor_depth = depth_of_node[current_ancestor];
+            ancestor_length = length_till_node[current_ancestor];
+        }
+
+        temp[0] = length - ancestor_length;
+        temp[1] = ancestor_depth - depth;
+        result = max(result, temp);
+
+        last_seen[nums[node]].push_back(node);
+
+        for(auto j:adj[node]){
+            if(j.first == par) continue;
+
+            length_till_node[node] += j.second;
+            dfs(j.first, node, length + j.second, depth + 1, current_ancestor, result, nums);
+
+            length_till_node[node] -= j.second;
+        }
+
+        last_seen[nums[node]].pop_back();
+        return;
+    }
+    vector<int> longestSpecialPath(vector<vector<int>>& edges, vector<int>& nums) {
+        for(auto j:edges){
+            adj[j[0]].push_back({j[1], j[2]});
+            adj[j[1]].push_back({j[0], j[2]});
+        }
+
+        vector<int> result = {0, -100000};
+
+        dfs(0, -1, 0, 1, -1, result, nums);
+
+        result[1] = result[1] * -1;
+        return result;
+    }
+};

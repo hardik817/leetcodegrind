@@ -1,0 +1,24 @@
+class Solution {
+public:
+    void solve(int i,string temp,string target,vector<string> &ans){
+        if(temp.size()==target.size()){
+            return;
+        }
+        string az="abcdefghijklmnopqrstuvwxyz";
+        for(char c:az){
+            temp.push_back(c);
+            ans.push_back(temp);
+            if(c==target[i]){
+                solve(i+1,temp,target,ans);
+                break;
+            }
+            temp.pop_back();
+        }
+    }
+    vector<string> stringSequence(string target) {
+        string temp="";
+        vector<string> ans;
+        solve(0,temp,target,ans);
+        return ans;
+    }
+};

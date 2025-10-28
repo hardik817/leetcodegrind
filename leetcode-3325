@@ -1,0 +1,21 @@
+class Solution {
+public:
+    int numberOfSubstrings(string s, int k) {
+        int n = s.size();
+        int count = 0;
+        int i = 0;
+        vector<int> freq(26, 0);
+
+        for (int j = 0; j < n; j++) {
+            freq[s[j] - 'a']++;
+
+            while (*max_element(freq.begin(), freq.end()) >= k) {
+                count += n - j;
+                freq[s[i] - 'a']--;
+                i++;
+            }
+        }
+
+        return count;
+    }
+};
